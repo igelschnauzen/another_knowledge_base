@@ -3,6 +3,7 @@ import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
+import { OptionalJwtAuthGuard } from 'src/guards/optional.guard';
 
 @Controller('articles')
 export class ArticlesController {
@@ -14,6 +15,7 @@ export class ArticlesController {
     return this.articlesService.create(createArticleDto);
   }
 
+  @UseGuards(OptionalJwtAuthGuard)
   @Get()
   findAll(@Request() req) {
     if (req.user) {
@@ -23,6 +25,7 @@ export class ArticlesController {
     }
   }
 
+  @UseGuards(OptionalJwtAuthGuard )
   @Get(':id')
   findOne(@Param('id') id: string, @Request() req) {
     if (req.user) {
@@ -32,6 +35,7 @@ export class ArticlesController {
     }
   }
 
+  @UseGuards(OptionalJwtAuthGuard )
   @Get('getByTags/:tags')
   findByTags(@Param('tags') tags: string, @Request() req) {
     if (req.user) {

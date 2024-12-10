@@ -8,7 +8,7 @@ import { JwtStrategy } from './users/jwt.strategy';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1/another_knowledge_base'),
+    MongooseModule.forRoot('mongodb://db/another_knowledge_base:27018'),
     ArticlesModule,
     UsersModule,
     PassportModule,
