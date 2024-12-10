@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Patch, Delete, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, Patch, Delete, UseGuards, Request } from '@nestjs/common';
 import { ArticlesService } from './articles.service';
 import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
@@ -15,18 +15,30 @@ export class ArticlesController {
   }
 
   @Get()
-  findAll() {
-    return this.articlesService.findAll();
+  findAll(@Request() req) {
+    if (req.user) {
+      return this.articlesService.findAll();
+    } else {
+      return this.articlesService.findAllPublic();
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.articlesService.findOne(id);
+  findOne(@Param('id') id: string, @Request() req) {
+    if (req.user) {
+      return this.articlesService.findOne(id);
+    } else {
+      return this.articlesService.findOnePublic(id);
+    }
   }
 
   @Get('getByTags/:tags')
-  findByTags(@Param('tags') tags: string) {
-    return this.articlesService.findByTags(tags);
+  findByTags(@Param('tags') tags: string, @Request() req) {
+    if (req.user) {
+      return this.articlesService.findByTags(tags);
+    } else {
+      return this.articlesService.findByTagsPublic(tags);
+    }
   }
 
   @UseGuards(JwtAuthGuard)
